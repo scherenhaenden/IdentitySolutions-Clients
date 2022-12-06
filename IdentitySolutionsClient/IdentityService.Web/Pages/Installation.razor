@@ -1,0 +1,141 @@
+@page "/Installation"
+@using IdentityService.Web.BusinessLogic.Services.Init
+@using IdentityService.Web.Models.Installation
+@using Microsoft.AspNetCore.Components
+@using Newtonsoft.Json
+
+
+<section class="hero is-primary is-fullheight">
+  
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Installation
+      </h1>
+      <h2 class="subtitle">
+        <div class="field">
+          <label class="label">Username - root - Admin</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-success" type="text" placeholder="Text input" @bind="_installationModel.AdminUserName">
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+          <p class="help is-success">This username is available</p>
+        </div>
+        
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-success" type="password" placeholder="***********" @bind="_installationModel.AdminPassword">
+            <span class="icon is-small is-left">
+              <i class="fas fa-key"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+          <p class="help is-success">This username is available</p>
+        </div>
+        
+        
+        <div class="field">
+          <label class="label">Confirm Password</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-success" type="password" placeholder="***********" @bind="_installationModel.AdminPasswordConfirm">
+            <span class="icon is-small is-left">
+              <i class="fas fa-key"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+          <p class="help is-success">This username is available</p>
+        </div>
+        
+        
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-success" type="email" placeholder="your-email@domain.anything" @bind="_installationModel.AdminEmail">
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+          <p class="help is-success">This username is available</p>
+        </div>
+        
+        
+        
+
+
+        <div class="field">
+          <label class="label">Database Type</label>
+          <div class="control">
+            <div class="select">
+
+              <InputSelect @bind-Value="_installationModel.DatabaseType">
+                @foreach (var databaseType in Enum.GetValues(typeof(DatabaseType)))
+                {
+                  <option value="@_installationModel?.DatabaseType">@databaseType</option>
+                }
+              </InputSelect>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Database - Connection String</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input" @bind="_installationModel.ConnectionString">
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link" @onclick="() => InstallApp()">Submit</button>
+          </div>
+        </div>
+        <label>@rest</label>
+
+
+      </h2>
+    </div>
+  </div>
+
+
+</section>
+
+
+
+@code {
+
+  private InstallationModel _installationModel = new InstallationModel();
+  public string rest = "";
+
+  public void InstallApp()
+  {
+
+    InitServiceWeb _InitService = new InitServiceWeb();
+  var result = _InitService.InstallApplication(_installationModel);
+    // Obj to json
+    rest = JsonConvert.SerializeObject(result);
+    
+
+
+  }
+  
+  protected override async Task OnInitializedAsync()
+  {
+    await base.OnInitializedAsync();
+  }
+
+}
